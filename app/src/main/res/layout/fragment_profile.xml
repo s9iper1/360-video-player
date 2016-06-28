@@ -106,6 +106,17 @@
                 android:text="Done"
                 android:padding="15dp"
                 android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/logout"
+                android:background="@android:drawable/editbox_background_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
+                android:text="Logout"
+                android:padding="15dp"
+                android:textSize="14sp" />
         </LinearLayout>
     </ScrollView>
 

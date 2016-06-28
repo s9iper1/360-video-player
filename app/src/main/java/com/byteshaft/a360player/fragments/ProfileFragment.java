@@ -1,6 +1,7 @@
 package com.byteshaft.a360player.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,13 +17,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.byteshaft.a360player.LoginActivity;
 import com.byteshaft.a360player.MainActivity;
 import com.byteshaft.a360player.R;
 import com.byteshaft.a360player.utils.AppGlobals;
 import com.byteshaft.a360player.utils.Helpers;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -45,7 +46,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public String mEmailString;
     private String mPasswordString;
     private String mNewPasswordString;
-    private boolean isPasswordChaged = false;
+    private boolean isPasswordChanged = false;
+    private Button button;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +60,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mEmailAddress = (EditText) mBaseView.findViewById(R.id.email);
         mPassword = (EditText) mBaseView.findViewById(R.id.password);
         mNewPassword = (EditText) mBaseView.findViewById(R.id.repeat_password);
+        button = (Button) mBaseView.findViewById(R.id.logout);
+        button.setOnClickListener(this);
+        if (Helpers.isUserLogin()) {
+            button.setVisibility(View.VISIBLE);
+        } else {
+            button.setVisibility(View.GONE);
+        }
         mPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -70,7 +79,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                isPasswordChaged = true;
+                isPasswordChanged = true;
             }
         });
         mNewPassword.addTextChangedListener(new TextWatcher() {
@@ -86,7 +95,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                isPasswordChaged = true;
+                isPasswordChanged = true;
             }
         });
         mDoneButton = (Button) mBaseView.findViewById(R.id.done_button);
@@ -103,14 +112,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 mFirstNameString = mFirstName.getText().toString();
                 mLastNameString = mLastName.getText().toString();
                 mSchoolString = mSchool.getText().toString();
-                Log.i("TAG", "" + isPasswordChaged);
-                if (isPasswordChaged) {
+                Log.i("TAG", "" + isPasswordChanged);
+                if (isPasswordChanged) {
                     if (validateSubmitInfo()) {
                         new UpdateUserProfileTask().execute();
                     }
                 } else {
                     new UpdateUserProfileTask().execute();
                 }
+                break;
+            case R.id.logout:
+                SharedPreferences sharedPreferences = Helpers.getPreferenceManager();
+                sharedPreferences.edit().clear().apply();
+                MainActivity.getInstance().openFirstTab();
+                MainActivity.getInstance().finish();
+                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
+                break;
 
         }
     }
@@ -149,7 +166,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        isPasswordChaged = false;
+        isPasswordChanged = false;
     }
 
     @Override
@@ -220,7 +237,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 mLastName.setEnabled(false);
                 mSchool.setEnabled(false);
                 mEmailAddress.setEnabled(false);
-                isPasswordChaged = false;
+                isPasswordChanged = false;
             }
         }
     }

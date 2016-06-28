@@ -27,7 +27,7 @@ public class Helpers {
     private static ProgressDialog progressDialog;
 
     // get default sharedPreferences.
-    private static SharedPreferences getPreferenceManager() {
+    public static SharedPreferences getPreferenceManager() {
         return PreferenceManager.getDefaultSharedPreferences(AppGlobals.getContext());
     }
 

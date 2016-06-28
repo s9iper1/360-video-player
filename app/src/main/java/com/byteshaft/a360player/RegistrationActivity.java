@@ -159,11 +159,12 @@ public class RegistrationActivity extends AppCompatActivity {
             }
             if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
                 Toast.makeText(AppGlobals.getContext(),
-                        "Account Created Successfully, Check your email for activation code",
+                        "Account Created Successfully",
                         Toast.LENGTH_LONG).show();
-                Helpers.registrationDone(true);
+                Helpers.userStatus(true);
+                LoginActivity.getInstance().finish();
                 finish();
-                startActivity(new Intent(getApplicationContext(), CodeConfirmationActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
                 Toast.makeText(AppGlobals.getContext(), "Registration failed. Email already in use",
                         Toast.LENGTH_SHORT).show();

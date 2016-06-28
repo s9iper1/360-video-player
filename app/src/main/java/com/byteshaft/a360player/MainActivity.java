@@ -28,9 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Helpers.isRegistered() && !Helpers.isUserActive()) {
-            startActivity(new Intent(getApplicationContext(), CodeConfirmationActivity.class));
-        } else if (!Helpers.isUserLogin()) {
+       if (!Helpers.isUserLogin()) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
         setContentView(R.layout.activity_main);

@@ -160,10 +160,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Toast.LENGTH_SHORT).show();
             } else {
                 if (accountStatus == HttpURLConnection.HTTP_FORBIDDEN) {
-                    System.out.println(accountStatus + "working");
-                    Toast.makeText(AppGlobals.getContext(), "Login Failed! Account not activated",
-                            Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), CodeConfirmationActivity.class));
                 } else if (accountStatus == HttpURLConnection.HTTP_NOT_FOUND) {
                     Toast.makeText(AppGlobals.getContext(), "Login Failed! Account not found",
                             Toast.LENGTH_SHORT).show();
